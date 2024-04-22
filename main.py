@@ -1,8 +1,14 @@
 import os
 from flask import Flask, flash, render_template, url_for, redirect, request
 from werkzeug.utils import secure_filename
-from database import addUser
-from utilities import allowed_file, detectFace, getPersona
+from database import addUser, getData
+from utilities import (
+    allowed_file,
+    detectFace,
+    getGithubData,
+    getLinkedInProfile,
+    getPersona,
+)
 import variables
 
 UPLOAD_FOLDER = "uploads"
@@ -17,15 +23,24 @@ def capture_by_frames():
 
 
 @app.route("/profile/<int:userid>")
-def get_profile():
-    if variables.loggedin is None:
-        return redirect("/signup", code=302)
-    return render_template("index.html")
+def get_profile(userid):
+    # if variables.loggedin is None:
+    #     return redirect("/signup", code=302)
+    print(userid)
+    data = getData(userid)
+
+    print(data)
+
+    print(data[5])
+    githubData = getGithubData(data[5])
+    linkedin = getLinkedInProfile(data[4])
+    return render_template(
+        "index.html", data=data, githubData=githubData, linkedin=linkedin
+    )
 
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-
     if variables.loggedin is not None:
         return redirect("/", code=302)
 

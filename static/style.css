@@ -21,6 +21,22 @@ body{
     padding: 3rem;
 }
 
+.personal-data{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.personal-data h2{
+    font-size: 2.5rem;
+}
+
+.personal-data h3{
+    font-size: 2rem;
+}
+
+
+
 .posts{
     display: flex;
     align-items: flex-start;
@@ -39,12 +55,18 @@ body{
     padding: 2rem;
 }
 
+.linkedin-posts{
+    width: 50%;
+}
+
 .li-post-arena{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 1rem;
 }
 
 .post{
     padding: 1rem;
+    background-color: #485461;
+
 }

@@ -19,10 +19,11 @@ def addUser(firstname, lastname, password, linkedin, github, about, persona) -> 
 
 
 def getData(userid):
-    conn = sqlite3.connect("peofile.db")
+    conn = sqlite3.connect("profile.db")
     cursor = conn.cursor()
     qry = "SELECT * FROM profile WHERE id=?"
-    data = cursor.execute(qry, userid)
+    data = cursor.execute(qry, (userid,))
+    one = data.fetchone()
     conn.commit()
     conn.close()
-    return data
+    return one

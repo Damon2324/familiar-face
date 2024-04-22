@@ -1,3 +1,4 @@
+import json
 from linkedin_api import Linkedin
 import requests as req
 import cv2
@@ -5,25 +6,21 @@ import google.generativeai as genai
 import sys
 
 
-def getLinkedInProfile(profileid) -> list:
+def getLinkedInProfile(profileid):
     password = open("secret.key").read()
     api = Linkedin("aizensosukesama106@gmail.com", password)
 
-    profile = api.get_profile("swarup-vishwas-8895221b9")
-
     recent_post = api.get_profile_posts("swarup-vishwas-8895221b9")
 
-    print(recent_post)
-
-    return [profile, recent_post]
+    return recent_post
 
 
-def getGithubData(profileid) -> list:
-    data = req.get(f"https://api.github.com/users/{profileid}")
+def getGithubData(profileid):
     projects = req.get(
         f"https://api.github.com/users/{profileid}/repos?sort=created&direction=desc"
-    )
-    return [data, projects]
+    ).json()
+
+    return projects[:10]
 
 
 def detectFace(imagePath) -> int:
