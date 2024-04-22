@@ -5,7 +5,6 @@ def addUser(firstname, lastname, password, linkedin, github, about, persona) -> 
     conn = sqlite3.connect("profile.db")
     cursor = conn.cursor()
     qry = "INSERT into profile(id,firstname, lastname, password, linkedin, github, about, persona) VALUES(null,?,?,?,?,?,?,?)"
-    linkedin = linkedin.split("/")[-1]
     cursor.execute(
         qry, (firstname, lastname, password, linkedin, github, about, persona)
     )

@@ -16,8 +16,8 @@ def capture_by_frames():
     pass
 
 
-@app.route("/")
-def index():
+@app.route("/profile/<int:userid>")
+def get_profile():
     if variables.loggedin is None:
         return redirect("/signup", code=302)
     return render_template("index.html")
