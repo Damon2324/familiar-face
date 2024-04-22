@@ -2,6 +2,7 @@ import os
 from flask import Flask, flash, render_template, url_for, redirect, request
 from werkzeug.utils import secure_filename
 from database import addUser, getData
+from face_detect import recognize_faces
 from utilities import (
     allowed_file,
     detectFace,
@@ -18,14 +19,23 @@ app = Flask(__name__, template_folder="templates")
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
-def capture_by_frames():
-    pass
+@app.route("/")
+def index():
+    if variables.loggedin is None:
+        return redirect("/signup", code=302)
+    face = recognize_faces()
+    if face is False:
+        return redirect("/", code=302)
+
+    print("Face found : " + str(face))
+
+    return redirect("/profile/" + str(face), code=302)
 
 
 @app.route("/profile/<int:userid>")
 def get_profile(userid):
-    # if variables.loggedin is None:
-    #     return redirect("/signup", code=302)
+    if variables.loggedin is None:
+        return redirect("/signup", code=302)
     print(userid)
     data = getData(userid)
 
@@ -34,8 +44,9 @@ def get_profile(userid):
     print(data[5])
     githubData = getGithubData(data[5])
     linkedin = getLinkedInProfile(data[4])
+    url = f"https://api.multiavatar.com/{data[1]}.svg"
     return render_template(
-        "index.html", data=data, githubData=githubData, linkedin=linkedin
+        "index.html", data=data, githubData=githubData, linkedin=linkedin, url=url
     )
 
 
