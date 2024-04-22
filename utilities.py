@@ -1,6 +1,7 @@
 from linkedin_api import Linkedin
 import requests as req
 import cv2
+import google.generativeai as genai
 import sys
 
 
@@ -43,3 +44,19 @@ def detectFace(imagePath) -> int:
 def allowed_file(filename):
     ALLOWED_EXTENSIONS = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def getPersona(text):
+    genai.configure(api_key="AIzaSyBAESdw0y1QQancJ7Bb9ICpc-rUxi2cHrY")
+    model = genai.GenerativeModel("gemini-pro")
+    if text != "":
+        print(f"Processing string:   {text}")
+        res = f' By using give statement :  "{ text }", categorize user into "Gym Freak", "Social Butterfly", "Knowledge Seeker" and only give me label'
+        print(res)
+        response = model.generate_content(res)
+        gen_text = ""
+        for chunk in response:
+            print(chunk.text)
+            gen_text += chunk.text
+
+        return gen_text
