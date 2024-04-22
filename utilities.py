@@ -3,18 +3,12 @@ import requests as req
 import cv2
 import sys
 
-# Authenticate using any Linkedin account credentials
-
 
 def getLinkedInProfile(profileid) -> list:
     password = open("secret.key").read()
     api = Linkedin("aizensosukesama106@gmail.com", password)
 
-    # GET a profile
     profile = api.get_profile("swarup-vishwas-8895221b9")
-
-    # GET a profiles contact info
-    # contact_info = api.get_profile_contact_info('billy-g')
 
     recent_post = api.get_profile_posts("swarup-vishwas-8895221b9")
 
@@ -46,4 +40,6 @@ def detectFace(imagePath) -> int:
     return len(faces)
 
 
-print(detectFace("./trials/IMG-20240416-WA0029.jpg"))
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
