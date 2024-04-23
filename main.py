@@ -45,8 +45,15 @@ def get_profile(userid):
     githubData = getGithubData(data[5])
     linkedin = getLinkedInProfile(data[4])
     url = f"https://api.multiavatar.com/{data[1]}.svg"
+    lang_url = f"https://github-readme-stats.vercel.app/api/top-langs?username={data[5]}&show_icons=true&locale=en&layout=compact"
+    print("lang url : ", lang_url)
     return render_template(
-        "index.html", data=data, githubData=githubData, linkedin=linkedin, url=url
+        "index.html",
+        data=data,
+        githubData=githubData,
+        linkedin=linkedin,
+        url=url,
+        langurl=lang_url,
     )
 
 
@@ -62,6 +69,7 @@ def signup():
         linkedin = request.form["linked_url"]
         github = request.form["git_url"]
         about = request.form["about_user"]
+        dob = request.form["dob"]
 
         if "image" not in request.files:
             return redirect(request.url)
@@ -81,10 +89,25 @@ def signup():
 
             print(faces)
 
-            persona = getPersona(about)
+            linkedindata = getLinkedInProfile(linkedin)
+
+            string = ""
+
+            for lk in linkedindata:
+                string += lk["commentary"]["text"]["text"]
+
+            [persona, summary] = getPersona(about + string)
 
             userid = addUser(
-                firstname, lastname, password, linkedin, github, about, persona
+                firstname,
+                lastname,
+                password,
+                linkedin,
+                github,
+                about,
+                persona,
+                dob,
+                summary=summary,
             )
 
             extension = file.filename.split(".")[-1]

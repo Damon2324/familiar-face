@@ -10,8 +10,18 @@ def getLinkedInProfile(profileid):
     password = open("secret.key").read()
     api = Linkedin("aizensosukesama106@gmail.com", password)
 
-    recent_post = api.get_profile_posts("swarup-vishwas-8895221b9")
+    recent_post = api.get_profile_posts(profileid)
 
+    return recent_post[:4]
+
+
+def getLiProfileData(profileid):
+    password = open("secret.key").read()
+    api = Linkedin("aizensosukesama106@gmail.com", password)
+
+    recent_post = api.get_profile(profileid)
+    with open("sample.json", "w", encoding="utf-8") as f:
+        f.write(json.dumps(recent_post))
     return recent_post
 
 
@@ -56,4 +66,13 @@ def getPersona(text):
             print(chunk.text)
             gen_text += chunk.text
 
-        return gen_text
+        summary = ""
+        print(f"Processing string:   {text}")
+        res = f' By using give statement :  "{ text }", give 3 lines short summary about personality of user and only give me summary'
+        print(res)
+        response = model.generate_content(res)
+        for chunk in response:
+            print(chunk.text)
+            summary += chunk.text
+
+        return [gen_text, summary]

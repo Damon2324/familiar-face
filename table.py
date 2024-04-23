@@ -17,7 +17,9 @@ table = """ CREATE TABLE Profile (
             linkedin TEXT,
             github TEXT,
             about TEXT, 
-            persona TEXT
+            persona TEXT,
+            dob TEXT,
+            summary TEXT
         ); """
 
 cursor_obj.execute(table)

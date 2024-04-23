@@ -1,12 +1,15 @@
 import sqlite3
 
 
-def addUser(firstname, lastname, password, linkedin, github, about, persona) -> int:
+def addUser(
+    firstname, lastname, password, linkedin, github, about, persona, dob, summary
+) -> int:
     conn = sqlite3.connect("profile.db")
     cursor = conn.cursor()
-    qry = "INSERT into profile(id,firstname, lastname, password, linkedin, github, about, persona) VALUES(null,?,?,?,?,?,?,?)"
+    qry = "INSERT into profile(id,firstname, lastname, password, linkedin, github, about, persona, dob, summary) VALUES(null,?,?,?,?,?,?,?, ?,?)"
     cursor.execute(
-        qry, (firstname, lastname, password, linkedin, github, about, persona)
+        qry,
+        (firstname, lastname, password, linkedin, github, about, persona, dob, summary),
     )
 
     data = cursor.execute("SELECT id FROM Profile")
