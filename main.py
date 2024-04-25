@@ -7,6 +7,7 @@ from utilities import (
     allowed_file,
     detectFace,
     getGithubData,
+    getLiProfileData,
     getLinkedInProfile,
     getPersona,
 )
@@ -48,7 +49,7 @@ def get_profile(userid):
     lang_url = f"https://github-readme-stats.vercel.app/api/top-langs?username={data[5]}&show_icons=true&locale=en&layout=compact"
     print("lang url : ", lang_url)
     return render_template(
-        "index.html",
+        "display.html",
         data=data,
         githubData=githubData,
         linkedin=linkedin,
@@ -90,13 +91,14 @@ def signup():
             print(faces)
 
             linkedindata = getLinkedInProfile(linkedin)
-
+            liData = getLiProfileData(linkedin)
+            loc = liData["geoLocationName"] + "," + liData["geoCountryName"]
             string = ""
 
             for lk in linkedindata:
                 string += lk["commentary"]["text"]["text"]
 
-            [persona, summary] = getPersona(about + string)
+            [persona, summary, exp] = getPersona(about + string)
 
             userid = addUser(
                 firstname,
@@ -108,6 +110,8 @@ def signup():
                 persona,
                 dob,
                 summary=summary,
+                location=loc,
+                expertise=exp,
             )
 
             extension = file.filename.split(".")[-1]

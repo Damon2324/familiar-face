@@ -58,7 +58,7 @@ def getPersona(text):
     model = genai.GenerativeModel("gemini-pro")
     if text != "":
         print(f"Processing string:   {text}")
-        res = f' By using give statement :  "{ text }", categorize user into "Gym Freak", "Social Butterfly", "Knowledge Seeker" and only give me label'
+        res = f' By using give statement :  "{ text }", categorize user into "Gym Freak", "Social Butterfly", "Knowledge Seeker" and only give me in output'
         print(res)
         response = model.generate_content(res)
         gen_text = ""
@@ -75,4 +75,13 @@ def getPersona(text):
             print(chunk.text)
             summary += chunk.text
 
-        return [gen_text, summary]
+        exp = ""
+        print(f"Processing string:   {text}")
+        res = f' By using give statement :  "{ text }", give Area of Interests and just return one'
+        print(res)
+        response = model.generate_content(res)
+        for chunk in response:
+            print(chunk.text)
+            exp += chunk.text
+
+        return [gen_text, summary, exp]

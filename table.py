@@ -19,7 +19,9 @@ table = """ CREATE TABLE Profile (
             about TEXT, 
             persona TEXT,
             dob TEXT,
-            summary TEXT
+            summary TEXT,
+            location TEXT,
+            expertise TEXT
         ); """
 
 cursor_obj.execute(table)
