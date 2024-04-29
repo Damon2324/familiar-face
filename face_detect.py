@@ -11,8 +11,11 @@ def recognize_faces():
 
     for file in os.listdir("uploads"):
         image = face_recognition.load_image_file(f"uploads/{file}")
-        encoding = face_recognition.face_encodings(image)[0]
-
+        encod = face_recognition.face_encodings(image)
+        if len(encod) != 0:
+            encoding = encod[0]
+        else:
+            continue
         name = os.path.splitext(file)[0]
         saved_face_encodings.append(encoding)
         saved_face_names.append(name)
@@ -43,7 +46,7 @@ def recognize_faces():
 
                 if times >= 8:
                     break
-                    
+
             # Draw label with name
             (top, right, bottom, left) = face_locations[0]
             cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)

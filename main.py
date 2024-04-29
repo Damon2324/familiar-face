@@ -82,13 +82,12 @@ def signup():
             complete_path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
             file.save(complete_path)
             faces = detectFace(complete_path)
+            print(faces)
             if faces > 1:
                 return redirect(request.url)
 
             if faces == 0:
                 return redirect(request.url)
-
-            print(faces)
 
             linkedindata = getLinkedInProfile(linkedin)
             liData = getLiProfileData(linkedin)
